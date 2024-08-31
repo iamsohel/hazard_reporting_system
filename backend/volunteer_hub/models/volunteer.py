@@ -1,11 +1,20 @@
 from django.contrib.gis.db import models
+from incident_manager.models.address import Thana
 
 
 class Volunteer(models.Model):
     full_name = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=15)
-    location = models.PointField(geography=True)  # Using GeoDjango for geo fields
+    # Using GeoDjango for geo fields
+    location = models.PointField(geography=True)
     address = models.CharField(max_length=255)
+    thana = models.ForeignKey(
+        Thana,
+        null=True,
+        default=None,
+        on_delete=models.SET_NULL,
+        related_name="volunteers",
+    )
     is_active = models.BooleanField(default=True)
     notes = models.TextField()
     assistance_type = models.CharField(
